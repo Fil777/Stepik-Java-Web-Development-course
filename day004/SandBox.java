@@ -18,5 +18,8 @@ public class SandBox {
 
         System.out.println("Всё верно! \uD83D\uDE0E");
 
+        int[][] table = new int[3][5];
+        System.out.println(table[0][2]);
+
     }
 }
