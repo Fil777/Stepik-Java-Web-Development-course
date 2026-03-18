@@ -1,0 +1,11 @@
+{
+    "Scanner Input Data": {
+        "prefix": "indata",
+        "body": [
+            "Scanner$1 ${2:scanner} = new Scanner(System.in);",
+            "$3",
+            "${2:scanner}.close();"
+        ],
+        "description": "Создает Scanner для ввода данных и закрывает его"
+    }
+}

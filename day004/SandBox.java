@@ -13,8 +13,10 @@ public class SandBox {
         String y = Character.toString(128_512);
         System.out.println(y);
 
-        System.out.println("" + "\uD83D\uDE00");
+        System.out.println(Character.toChars(0x1F34D));
+        System.out.println(Character.toChars(0x2665));
 
         System.out.println("Всё верно! \uD83D\uDE0E");
+
     }
 }
