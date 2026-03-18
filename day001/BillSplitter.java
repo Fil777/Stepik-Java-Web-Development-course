@@ -1,4 +1,4 @@
-public class Program {
+public class BillSplitter {
     public static void main(String[] args) {
 
         double billAmount = 2000; // Общая сумма, которую нужно оплатить за обед.
