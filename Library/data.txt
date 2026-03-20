@@ -1,0 +1,14 @@
+BOOKS:
+eee
+ggg
+eee
+ggg
+aaa
+bbb
+ccc
+fff
+
+USERS:
+bob:xxx,ppp,kkk
+andy:zzz,fff
+charlie:qqq,www
