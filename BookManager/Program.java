@@ -1,7 +1,8 @@
-import core.App;
+import core.Terminal;
 
 public class Program {
     public static void main(String[] args) {
-        App.run();
+        Terminal.writeLine("Приветствую в библиотеке!");
+        ;
     }
 }

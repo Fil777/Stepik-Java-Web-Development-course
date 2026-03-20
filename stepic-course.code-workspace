@@ -1,0 +1,39 @@
+{
+    "folders": [
+		{
+			"path": "day001"
+		},
+		{
+			"path": "day002"
+		},
+		{
+			"path": "day003"
+		},
+		{
+			"path": "day004"
+		},
+		{
+			"path": "day005"
+		},
+		{
+			"path": "day006"
+		},
+		{
+			"path": "day007"
+		},
+		{
+			"path": "day008"
+		},
+		{
+			"path": "day009"
+		},
+		{
+			"path": "BookManager"
+		}
+	],
+    "settings": {},
+    "launch": {
+        "version": "0.2.0",
+        "configurations": []
+    }
+}
