@@ -10,5 +10,6 @@ fff
 
 USERS:
 bob:xxx,ppp,kkk
+dmitry:
 andy:zzz,fff
 charlie:qqq,www
