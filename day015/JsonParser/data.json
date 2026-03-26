@@ -1,0 +1,22 @@
+{
+  "pageSize": 4,
+  "totalCount": 12,
+  "currentPage": 3,
+  "contacts": [
+    {
+      "name": "Luvenia Zieme",
+      "id": 1,
+      "email": "irma.davis@hotmail.com"
+    },
+    {
+      "name": "Phebe McLaughlin",
+      "id": 2,
+      "email": "dudley.maggio@gmail.com"
+    },
+    {
+      "name": "Mrs. Tanya Senger",
+      "id": 3,
+      "email": "amina.abbott@hotmail.com"
+    }
+  ]
+}

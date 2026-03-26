@@ -1,0 +1,68 @@
+{
+  "isSuccess": true,
+  "statusCode": 200,
+  "errorMessages": [],
+  "result": {
+    "orderHeaderId": 1,
+    "customerName": "Илья Муромец",
+    "customerEmail": "ilya.muromets@bogatyr.email",
+    "appUserId": "30276287-aeb0-488c-ac43-4b80718f1cc7",
+    "orderTotalAmount": 2385,
+    "orderDateTime": "2024-09-25T10:48:04.556128Z",
+    "status": "ready_to_ship",
+    "totalCount": 3,
+    "orderDetailItems": [
+      {
+        "orderDetailId": 1,
+        "orderHeaderId": 1,
+        "productId": 3,
+        "product": {
+          "id": 3,
+          "name": "Потрясающий Деревянный Ремень",
+          "description": "Этот потрясающий ремень, изготовленный из высококачественной древесины, станет стильным дополнением к вашему образу. Он прочный, долговечный и удобный в носке.",
+          "specialTag": "Популярный",
+          "category": "Аксессуары",
+          "price": 153.5,
+          "image": "https://s3.timeweb.cloud/3acf5705-ea38ea8637814151fb6185113c727eb4f/img2.png"
+        },
+        "quantity": 10,
+        "itemName": "Потрясающий Деревянный Ремень",
+        "price": 1535
+      },
+      {
+        "orderDetailId": 2,
+        "orderHeaderId": 1,
+        "productId": 4,
+        "product": {
+          "id": 4,
+          "name": "Модная Железная Чашка",
+          "description": "Эта модная чашка, изготовленная из прочного железа, идеально подходит для горячих и холодных напитков. Она имеет стильный дизайн и удобна в использовании.",
+          "specialTag": "Эксклюзив",
+          "category": "Посуда",
+          "price": 50,
+          "image": "https://s3.timeweb.cloud/3acf5705-ea38ea8637814151fb6185113c727eb4f/img4.png"
+        },
+        "quantity": 5,
+        "itemName": "Модная Железная Чашка",
+        "price": 250
+      },
+      {
+        "orderDetailId": 3,
+        "orderHeaderId": 1,
+        "productId": 5,
+        "product": {
+          "id": 5,
+          "name": "Элегантная Стеклянная Ваза",
+          "description": "Эта элегантная ваза, изготовленная из высококачественного стекла, станет прекрасным украшением для вашего дома. Она идеально подходит для цветочных композиций и придаст изысканности любому интерьеру.",
+          "specialTag": "Со скидкой",
+          "category": "Декор",
+          "price": 200,
+          "image": "https://s3.timeweb.cloud/3acf5705-ea38ea8637814151fb6185113c727eb4f/img5.png"
+        },
+        "quantity": 3,
+        "itemName": "Элегантная Стеклянная Ваза",
+        "price": 600
+      }
+    ]
+  }
+}
