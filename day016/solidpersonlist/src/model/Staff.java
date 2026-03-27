@@ -1,10 +1,10 @@
 package model;
 
-public class Staff extends EmptyPerson {
+public class Staff extends RootPerson implements StaffInteface{
     private double salary;
 
-    public Staff(String name, int age, double salary) {
-        super(name, age);
+    public Staff(int id, String name, int age, double salary) {
+        super(id, name, age);
         this.salary = salary;
     }
 

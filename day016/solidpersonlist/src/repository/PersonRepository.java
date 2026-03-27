@@ -2,6 +2,7 @@ package repository;
 
 import model.Person;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 
 public interface PersonRepository extends Repository<Person> {
@@ -12,6 +13,8 @@ public interface PersonRepository extends Repository<Person> {
     int updateById(int id, Person updatedPerson);
     int removeById(int id);
     void clear();
-    Person[] getAll();
+    ArrayList<Person> getAll();
+    Person get(int index);
     void sort(Comparator<Person> comparator);
+    int maxId();
 }

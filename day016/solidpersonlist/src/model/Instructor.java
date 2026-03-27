@@ -1,10 +1,10 @@
 package model;
 
-public class Instructor extends EmptyPerson {
+public class Instructor extends RootPerson implements InstructorInterface {
     private String subject;
 
-    public Instructor(String name, int age, String subject) {
-        super(name, age);
+    public Instructor(int id, String name, int age, String subject) {
+        super(id, name, age);
         this.subject = subject;
     }
 

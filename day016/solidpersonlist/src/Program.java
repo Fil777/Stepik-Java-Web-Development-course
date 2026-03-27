@@ -1,17 +1,22 @@
 import printer.ConsoleListDataPrinter;
 import repository.ListBasedPersonRepository;
-import ui.UserInteface;
+import ui.UserInteraction;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Program {
 
     public static void main(String[] args) {
-        ListBasedPersonRepository personRepository = new ListBasedPersonRepository();
+        final ListBasedPersonRepository personRepository = new ListBasedPersonRepository();
         ConsoleListDataPrinter dataPrinter = new ConsoleListDataPrinter();
-        Scanner scanner = new Scanner(System.in);
+        final Scanner scanner = new Scanner(System.in);
+        final Logger logger = Logger.getLogger(Class.class.getName());
 
-        UserInteface userInteface = new UserInteface();
-        userInteface.start(scanner, dataPrinter, personRepository);
+        logger.setLevel(Level.INFO);
+
+        UserInteraction userInteface = new UserInteraction();
+        userInteface.start(scanner, dataPrinter, personRepository, logger);
 
     }
 

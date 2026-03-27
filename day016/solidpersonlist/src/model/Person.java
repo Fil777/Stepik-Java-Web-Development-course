@@ -1,10 +1,6 @@
 package model;
 
-import core.DataInitializer;
-
-import java.io.Serializable;
-
-public abstract class Person implements Serializable {
+public abstract class Person {
     private int id;
     private String name;
     private int age;
@@ -15,13 +11,7 @@ public abstract class Person implements Serializable {
         this.age = age;
     }
 
-    public Person(String name, int age) {
-        this(DataInitializer.generateID(), name, age);
-    }
-
-    public int getId(){
-        return id;
-    }
+    public int getId() { return id; }
 
     public String getName() {
         return name;

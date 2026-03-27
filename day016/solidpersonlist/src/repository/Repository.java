@@ -1,15 +1,19 @@
 package repository;
 
+import java.time.Year;
+import java.util.ArrayList;
 import java.util.Comparator;
 
 public interface Repository <T> {
     int getSize();
-    int add(T person);
-    void add(T[] people);
+    int add(T element);
+    void add(T[] elements);
     T findById(int id);
-    int updateById(int id, T updatedPerson);
+    int updateById(int id, T updatedElement);
     int removeById(int id);
     void clear();
-    T[] getAll();
+    ArrayList<T> getAll();
+    T get(int index);
     void sort(Comparator<T> comparator);
+    int maxId();
 }

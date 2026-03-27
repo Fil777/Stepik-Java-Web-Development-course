@@ -1,7 +1,6 @@
 package repository;
 
-import model.EmptyPerson;
-import model.Person;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -9,7 +8,7 @@ import java.util.Comparator;
 public class ListBasedPersonRepository implements PersonRepository {
     private ArrayList<Person> people;
 
-    public ListBasedPersonRepository(){
+    public ListBasedPersonRepository() {
         this.people = new ArrayList<>();
     }
 
@@ -17,12 +16,12 @@ public class ListBasedPersonRepository implements PersonRepository {
         return people.size();
     }
 
-    public int add(Person person){
+    public int add(Person person) {
         people.add(person);
         return person.getId();
     }
 
-    public void add(Person[] people){
+    public void add(Person[] people) {
         for (Person person : people) {
             add(person);
         }
@@ -34,7 +33,7 @@ public class ListBasedPersonRepository implements PersonRepository {
                 return person;
             }
         }
-        return new EmptyPerson();
+        return null;
     }
 
     public int removeById(int id) {
@@ -47,12 +46,16 @@ public class ListBasedPersonRepository implements PersonRepository {
         return -1;
     }
 
-    public Person[] getAll() {
-        Person[] result = new Person[people.size()];
-        for (int i = 0; i < people.size(); i++) {
-            result[i] = people.get(i);
-        }
+    public ArrayList<Person> getAll() {
+        ArrayList<Person> result = this.people;
         return result;
+    }
+
+    public Person get(int index) {
+        if (index < 0 || index >= people.size()) {
+            return null;
+        }
+        return people.get(index);
     }
 
     public void clear() {
@@ -69,8 +72,13 @@ public class ListBasedPersonRepository implements PersonRepository {
         return -1;
     }
 
-    public void sort(Comparator<Person> comparator){
+    public void sort(Comparator<Person> comparator) {
         people.sort(comparator);
+    }
+
+    public int maxId(){
+        Comparator<Person> comparator = Comparator.comparingInt(person -> person.getId());
+        return people.stream().max(comparator).get().getId();
     }
 
 }

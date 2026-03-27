@@ -1,10 +1,10 @@
 package model;
 
-public class Student extends EmptyPerson{
+public class Student extends RootPerson implements StudentInterface{
     private String schoolName;
 
-    public Student(String name, int age, String schoolName) {
-        super(name, age);
+    public Student(int id, String name, int age, String schoolName) {
+        super(id, name, age);
         this.schoolName = schoolName;
     }
 

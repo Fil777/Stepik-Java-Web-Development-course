@@ -1,36 +1,42 @@
 package ui;
 
-import database.DataManager;
-import model.Instructor;
-import model.Person;
-import model.Staff;
-import model.Student;
+import database.FileRepositoryReader;
+import database.FileRepositoryWriter;
+import model.PersonInterfaceObject;
+import model.PersonType;
 import printer.ConsoleListDataPrinter;
 import repository.ListBasedPersonRepository;
+//import repository.ArrayBasedPersonRepository;
+import utils.IdGenerator;
 
-import java.io.IOException;
-import java.nio.file.NoSuchFileException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class UserInteface {
+public class UserInteraction {
 
     public void start(
             Scanner scanner,
             ConsoleListDataPrinter dataPrinter,
-            ListBasedPersonRepository personRepository) {
+            ListBasedPersonRepository personRepository,
+            Logger logger)
+    {
+        FileRepositoryReader reader = new FileRepositoryReader("persons.bin", personRepository, logger);
+        reader.execute();
+        IdGenerator.setID(personRepository.maxId()+1);
 
-        try {
-            personRepository.add(DataManager.readData());
-            Terminal.writeLine("Данные считаны из файла");
-        } catch (NoSuchFileException e) {
-            Terminal.writeNewLine("Новая база данных: " + e);
-        } catch (IOException e) {
-            Terminal.writeNewLine("Проблема работы с файлом данных: " + e.getMessage());
-            return;
-        } catch (Exception e) {
-            Terminal.writeNewLine("Проблема выполнения: " + e.getMessage());
-            return;
-        }
+//        try {
+//            personRepository.add(DataManager.readData());
+//            Terminal.writeLine("Данные считаны из файла");
+//        } catch (NoSuchFileException e) {
+//            Terminal.writeNewLine("Новая база данных: " + e);
+//        } catch (IOException e) {
+//            Terminal.writeNewLine("Проблема работы с файлом данных: " + e.getMessage());
+//            return;
+//        } catch (Exception e) {
+//            Terminal.writeNewLine("Проблема выполнения: " + e.getMessage());
+//            return;
+//        }
 
         Terminal.writeNewLine("Начало работы, здравствуйте!");
 
@@ -39,51 +45,67 @@ public class UserInteface {
             switch (choice) {
                 case '1':
                     char choice1 = getChoicePersonsMenu(scanner);
-                    int newId = 0;
+                    PersonInterfaceObject pio = null;
                     switch (choice1) {
                         case '1':
+                            // запрашиваем параметры человека
                             Terminal.writeLine("Введите имя сотрудника:");
                             String staffName = scanner.next();
                             Terminal.writeLine("Введите возраст сотрудника:");
                             int staffAge = scanner.nextInt();
                             Terminal.writeLine("Введите зарплату сотрудника:");
                             double staffSalary = scanner.nextDouble();
-                            Staff newStaff = new Staff(staffName, staffAge, staffSalary);
-                            personRepository.add(newStaff);
-                            newId = newStaff.getId();
+                            // создаём объект для передачи
+                            pio = new PersonInterfaceObject(PersonType.STAFF);
+                            pio.setId(IdGenerator.generateId());
+                            pio.setName(staffName);
+                            pio.setAge(staffAge);
+                            pio.setSalary(staffSalary);
                             break;
                         case '2':
+                            // запрашиваем параметры человека
                             Terminal.writeLine("Введите имя преподавателя:");
                             String teacherName = scanner.next();
                             Terminal.writeLine("Введите возраст преподавателя:");
                             int teacherAge = scanner.nextInt();
                             Terminal.writeLine("Введите предмет преподавателя:");
                             String teacherSubject = scanner.next();
-                            Instructor newTeacher = new Instructor(teacherName, teacherAge, teacherSubject);
-                            personRepository.add(newTeacher);
-                            newId = newTeacher.getId();
+                            // создаём объект для передачи
+                            pio = new PersonInterfaceObject(PersonType.INSTRUCTOR);
+                            pio.setId(IdGenerator.generateId());
+                            pio.setName(teacherName);
+                            pio.setAge(teacherAge);
+                            pio.setSubject(teacherSubject);
                             break;
                         case '3':
+                            // запрашиваем параметры человека
                             Terminal.writeLine("Введите имя учащегося:");
                             String studentName = scanner.next();
                             Terminal.writeLine("Введите возраст учащегося:");
                             int studentAge = scanner.nextInt();
                             Terminal.writeLine("Введите название школы учащегося:");
                             String studentSchool = scanner.next();
-                            Student newStudent = new Student(studentName, studentAge, studentSchool);
-                            personRepository.add(newStudent);
-                            newId = newStudent.getId();
+                            // создаём объект для передачи
+                            pio = new PersonInterfaceObject(PersonType.STUDENT);
+                            pio.setId(IdGenerator.generateId());
+                            pio.setName(studentName);
+                            pio.setAge(studentAge);
+                            pio.setSubject(studentSchool);
                             break;
                         default:
                             Terminal.writeLine("Неверный выбор. Пожалуйста, попробуйте снова.");
                             break;
                     }
-                    Terminal.writeLine("Добавлен человек. ID = " + newId) ;
+                    // создаём объект в репозитарии
+                    if (pio != null) {
+                        personRepository.add(pio.PioToPerson());
+                        Terminal.writeLine("Добавлен " + pio.getName() + ", ID = " + pio.getId());
+                    }
                     break;
                 case '2':
                     Terminal.writeLine("Введите ID человека для удаления:");
                     int deleteId = scanner.nextInt();
-                    if (deleteId == personRepository.removeById(deleteId)){
+                    if (deleteId == personRepository.removeById(deleteId)) {
                         Terminal.writeLine("Человек с ID " + deleteId + " удалён.");
                     } else {
                         Terminal.writeLine("Человек не найден.");
@@ -92,9 +114,9 @@ public class UserInteface {
                 case '3':
                     Terminal.writeLine("Введите ID человека для поиска:");
                     int searchId = scanner.nextInt();
-                    Person foundPersonById = personRepository.findById(searchId);
-                    if (foundPersonById != null) {
-                        Terminal.writeLine(foundPersonById.toString());
+                    PersonInterfaceObject foundById = new PersonInterfaceObject(personRepository.findById(searchId));
+                    if (foundById != null) {
+                        Terminal.writeLine(foundById.toString());
                     } else {
                         Terminal.writeLine("Человек не найден.");
                     }
@@ -104,12 +126,8 @@ public class UserInteface {
                     break;
                 case '0':
                     Terminal.writeNewLine("Завершение работы. До свидания!");
-                    try {
-                        DataManager.saveData(personRepository.getAll());
-                        Terminal.writeNewLine("Данные сохранены в файле");
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
+                    FileRepositoryWriter writer = new FileRepositoryWriter("persons.bin", personRepository, logger);
+                    writer.execute();
                     return;
                 default:
                     Terminal.writeLine("Неверный выбор. Пожалуйста, попробуйте снова.");
@@ -118,7 +136,7 @@ public class UserInteface {
         }
 
     }
-    
+
     private char getChoiceMainMenu(Scanner scanner) {
         Terminal.writeNewLine("1. Добавить человека");
         Terminal.writeLine("2. Удалить человека");

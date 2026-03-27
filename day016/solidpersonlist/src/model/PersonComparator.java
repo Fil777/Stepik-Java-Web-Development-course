@@ -18,8 +18,8 @@ public class PersonComparator <Person> implements Comparator <Person>  {
         if (!(p2 instanceof Person)) {
             return 1;
         }
-        EmptyPerson person1 = (EmptyPerson) p1;
-        EmptyPerson person2 = (EmptyPerson) p2;
+        RootPerson person1 = (RootPerson) p1;
+        RootPerson person2 = (RootPerson) p2;
         int result = 0;
         result = person1.getName().compareTo(person2.getName());
         if (result != 0) {
