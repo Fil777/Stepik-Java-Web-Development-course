@@ -1,6 +1,9 @@
 package stepik.course.logger;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayDeque;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,6 +64,5 @@ public class LoggerImproved {
     public void setGlobalLoggerLevel(Level level){
         globalLogger.setLevel(level);
     }
-
 
 }

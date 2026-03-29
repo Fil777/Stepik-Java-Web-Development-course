@@ -32,7 +32,7 @@ public class LoggerStorage implements Serializable {
         if (message == null || logName == null) return;
         String name = logName.isEmpty() ? defaultLog() : logName;
         storage.computeIfAbsent(name, k -> new ArrayDeque<>()).add(message);
-        if (storage.get(name).size() > arrayMaxSize){
+        if (storage.get(name).size() > arrayMaxSize) {
             storage.get(name).pop();
         }
     }
@@ -41,9 +41,10 @@ public class LoggerStorage implements Serializable {
         logMessage(defaultLog(), message);
     }
 
-    protected int getSize(String name){
+    protected int getSize(String name) {
         return storage.get(name).size();
     }
+
     /**
      *
      * @param name Logger name
