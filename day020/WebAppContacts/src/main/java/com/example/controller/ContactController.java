@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import com.example.initiatedata.ContactsInitiator;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,20 +14,14 @@ import java.util.ArrayList;
 @RequestMapping("/api/contacts")
 public class ContactController {
     private ArrayList<Contact> contacts = new ArrayList<>();
+    private int contactsCounter = 10;
 
     public ContactController() {
-        for (int i = 1; i < 10; i++) {
-            contacts.add(new Contact(
-                    i,
-                    "Имя " + i,
-                    "Фамилия " + i,
-                    "+7 111 222 33 3" + i,
-                    "user" + i + "@ksergey.ru"));
-        }
+        this.contacts = ContactsInitiator.generate(contactsCounter);
     }
 
     // http://localhost:8080/api/contacts/get
-    @GetMapping("/get")
+    @GetMapping("/all")
     public ArrayList<Contact> getContacts() {
         return contacts;
     }
