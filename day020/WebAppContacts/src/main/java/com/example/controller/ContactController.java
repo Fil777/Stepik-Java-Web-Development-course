@@ -14,14 +14,13 @@ import java.util.ArrayList;
 @RequestMapping("/api/contacts")
 public class ContactController {
     private ArrayList<Contact> contacts = new ArrayList<>();
-    private int contactsCounter = 10;
 
     public ContactController() {
-        this.contacts = ContactsInitiator.generate(contactsCounter);
+        this.contacts = ContactsInitiator.generate();
     }
 
-    // http://localhost:8080/api/contacts/get
-    @GetMapping("/all")
+    // http://localhost:8080/api/contacts/getAll
+    @GetMapping("/getAll")
     public ArrayList<Contact> getContacts() {
         return contacts;
     }

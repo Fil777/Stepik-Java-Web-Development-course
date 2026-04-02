@@ -1,19 +1,26 @@
 package stepik.course;
 
+import jdk.swing.interop.SwingInterOpUtils;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.util.*;
+
+import static java.time.LocalTime.now;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        System.out.println(sdf.format(date));
 
         Deque<String> stack = new ArrayDeque<>();
 
