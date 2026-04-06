@@ -1,15 +1,8 @@
 package stepik.contactsApp.datainitiator;
 
-<<<<<<< HEAD
 import stepik.contactsApp.model.entity.ContactOwner;
 import stepik.contactsApp.model.enums.AppRole;
 import stepik.contactsApp.common.util.transliterator.CyrillicToLatin;
-=======
-import stepik.contactsApp.model.entity.Contact;
-import stepik.contactsApp.model.entity.ContactOwner;
-import stepik.contactsApp.model.enums.AppRole;
-import stepik.contactsApp.transliterator.CyrillicToLatin;
->>>>>>> c916da316319988c56f2ed3546dfb53bcab8e5e8
 import com.github.javafaker.Faker;
 
 import java.text.SimpleDateFormat;

@@ -1,7 +1,7 @@
-package stepik.contactsApp.datainitiator;
+package com.example.initiatedata;
 
-import stepik.contactsApp.model.entity.Contact;
-import stepik.contactsApp.common.util.transliterator.CyrillicToLatin;
+import com.example.model.entity.Contact;
+import com.example.transliterator.CyrillicToLatin;
 import com.github.javafaker.Faker;
 
 import java.text.SimpleDateFormat;
