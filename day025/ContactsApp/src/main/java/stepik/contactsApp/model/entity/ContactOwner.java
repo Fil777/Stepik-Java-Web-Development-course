@@ -1,5 +1,6 @@
 package stepik.contactsApp.model.entity;
 
+import stepik.contactsApp.service.authentification.UserAuthentification;
 import stepik.contactsApp.model.enums.AppRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -24,13 +25,15 @@ public class ContactOwner {
     private List<Contact> contacts = new ArrayList<>();
 
     public ContactOwner() {
-        this.id = UUID.randomUUID().toString();
+        this.id = UserAuthentification.getNewUserId();
+        this.role = UserAuthentification.getNewUserRole();
     }
 
     public ContactOwner(String username, String description) {
         this();
         this.username = username;
         this.description = description;
+        this.role = UserAuthentification.getNewUserRole(username);
     }
 
     @Override

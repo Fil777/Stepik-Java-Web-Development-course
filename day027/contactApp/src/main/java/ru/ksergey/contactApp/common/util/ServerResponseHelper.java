@@ -1,0 +1,84 @@
+package ru.ksergey.contactApp.common.util;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import ru.ksergey.contactApp.model.ServerResponse;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class ServerResponseHelper {
+    public static <T> ResponseEntity<ServerResponse<T>> ok(
+            T result,
+            HttpStatus httpStatus) {
+
+        ServerResponse<T> response = ServerResponse.<T>builder()
+                .result(result)
+                .statusCode(httpStatus)
+                .isSuccess(true)
+                .errorMessages(new ArrayList<>())
+                .build();
+        return ResponseEntity.status(httpStatus).body(response);
+    }
+
+    public static <T> ResponseEntity<ServerResponse<T>> ok(T result) {
+        return ok(result, HttpStatus.OK);
+    }
+
+    public static <T> ResponseEntity<ServerResponse<T>> notFound(
+            T result,
+            List<String> errors) {
+
+        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+
+        ServerResponse<T> response = ServerResponse.<T>builder()
+                .result(result)
+                .statusCode(httpStatus)
+                .isSuccess(false)
+                .errorMessages(errors)
+                .build();
+
+        return ResponseEntity
+                .status(httpStatus)
+                .body(response);
+    }
+
+    public static <T> ResponseEntity<ServerResponse<T>> notFound(T result) {
+        return notFound(result, Collections.singletonList("Данные не найдены"));
+    }
+
+
+    public static <T> ResponseEntity<ServerResponse<T>> conflict(
+            T result,
+            List<String> errors) {
+        HttpStatus httpStatus = HttpStatus.CONFLICT;
+        ServerResponse<T> response = ServerResponse.<T>builder()
+                .result(result)
+                .statusCode(httpStatus)
+                .isSuccess(false)
+                .errorMessages(errors)
+                .build();
+        return ResponseEntity
+                .status(httpStatus)
+                .body(response);
+    }
+
+    public static <T> ResponseEntity<ServerResponse<T>> conflict(
+            T result) {
+        return conflict(result,
+                Collections.singletonList("Конфликт при выполнении операции"));
+    }
+
+    public static <T> ResponseEntity<ServerResponse<T>> created(T result) {
+        HttpStatus httpStatus = HttpStatus.CREATED;
+        ServerResponse<T> response = ServerResponse.<T>builder()
+                .result(result)
+                .statusCode(httpStatus)
+                .isSuccess(true)
+                .errorMessages(new ArrayList<>())
+                .build();
+
+        return ResponseEntity.status(httpStatus).body(response);
+    }
+}
