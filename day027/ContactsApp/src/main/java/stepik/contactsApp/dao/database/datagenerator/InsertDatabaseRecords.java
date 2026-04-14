@@ -1,4 +1,4 @@
-package stepik.contactsApp.database.datagenerator;
+package stepik.contactsApp.dao.database.datagenerator;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import stepik.contactsApp.model.entity.Contact;

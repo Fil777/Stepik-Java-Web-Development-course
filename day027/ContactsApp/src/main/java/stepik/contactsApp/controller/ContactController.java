@@ -1,6 +1,6 @@
 package stepik.contactsApp.controller;
 
-import stepik.contactsApp.common.util.ServerResponseHelper;
+import stepik.contactsApp.common.utils.serverresponse.ServerResponseHelper;
 import stepik.contactsApp.model.ServerResponse;
 import stepik.contactsApp.model.dto.CreateContactDTO;
 import stepik.contactsApp.model.dto.UpdateContactDTO;

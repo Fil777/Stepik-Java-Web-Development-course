@@ -1,7 +1,6 @@
 package stepik.contactsApp.controller;
 
-import stepik.contactsApp.common.util.ServerResponseHelper;
-import org.springframework.http.HttpStatus;
+import stepik.contactsApp.common.utils.serverresponse.ServerResponseHelper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

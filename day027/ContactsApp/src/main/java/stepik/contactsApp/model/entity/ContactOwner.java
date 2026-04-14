@@ -1,6 +1,6 @@
 package stepik.contactsApp.model.entity;
 
-import stepik.contactsApp.service.authentification.UserAuthentification;
+import stepik.contactsApp.common.utils.authentification.UserAuthentification;
 import stepik.contactsApp.model.enums.AppRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

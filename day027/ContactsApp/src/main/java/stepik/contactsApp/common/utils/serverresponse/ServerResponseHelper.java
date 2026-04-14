@@ -1,4 +1,4 @@
-package stepik.contactsApp.common.util;
+package stepik.contactsApp.common.utils.serverresponse;
 
 import stepik.contactsApp.model.ServerResponse;
 import org.springframework.http.HttpStatus;

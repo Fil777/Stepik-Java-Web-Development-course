@@ -1,87 +1,133 @@
 package stepik.contactsApp.dao;
 
-import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import stepik.contactsApp.model.entity.Contact;
 import stepik.contactsApp.model.entity.ContactOwner;
+import stepik.contactsApp.model.enums.AppRole;
 
-import java.util.ArrayList;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+@Primary
 @Repository
 public class ContactOwnerRepository implements ContactOwnerRepositoryInterface {
 
-    private final List<ContactOwner> contactOwners = new ArrayList<>();
-    private final ModelMapper modelMapper;
+    private final JdbcTemplate jdbcTemplate;
 
-    public ContactOwnerRepository(ModelMapper modelMapper) {
-        //this.contactOwners = ContactOwnersInitiator.generate();
-        this.modelMapper = modelMapper;
+    @Autowired
+    public ContactOwnerRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    private static class ContactOwnerRowMapper implements RowMapper<ContactOwner> {
+        @Override
+        public ContactOwner mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new ContactOwner(
+                    rs.getString("id"),
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    rs.getString("description"),
+                    rs.getString("email"),
+                    rs.getString("name"),
+                    AppRole.valueOf(rs.getString("role"))
+            );
+        }
     }
 
     @Override
     public List<ContactOwner> findAll() {
-        return new ArrayList<>(contactOwners);
+        String sql = "SELECT id, name, username, description, email, password, role "
+                + "FROM contact_owners";
+        List<ContactOwner> owners = jdbcTemplate.query(sql, new ContactOwnerRowMapper());
+        return owners;
     }
 
     @Override
     public ContactOwner save(ContactOwner owner) {
         if (owner.getId().isBlank()) {
-            ContactOwner newOwner = new ContactOwner();
-            owner.setId(newOwner.getId());
-            newOwner.updateWith(owner);
-            contactOwners.add(newOwner);
-            return newOwner;
+            // новый владелец контактов
+            ContactOwner temp = new ContactOwner();
+            owner.setId(temp.getId());
+            owner.setRole(temp.getRole());
+            String sql = "INSERT INTO contact_owners "
+                    + "(id,name,username,description,email,password,role) "
+                    + "values(?,?,?,?,?,?,?)";
+            jdbcTemplate.update(sql,
+                    owner.getId(),
+                    owner.getFullName(),
+                    owner.getUsername(),
+                    owner.getDescription(),
+                    owner.getEmail(),
+                    owner.getPassword(),
+                    owner.getRole().name()
+            );
         } else {
-            Optional<ContactOwner> opOwner;
-            ContactOwner ownerInList;
-            opOwner = findById(owner.getId());
-            if (opOwner.isPresent()) {
-                ownerInList = opOwner.get();
-                ownerInList.updateWith(owner);
-                return ownerInList;
-            } else {
-                contactOwners.add(owner);
-                return owner;
-            }
+            // уже учтённый и обновлённый владелец контактов
+            String sql = "UPDATE contact_owners "
+                    + "SET name = ?, username = ?, description = ?, "
+                    + "email = ?, password = ?, role = ? "
+                    + "WHERE id = ?";
+            jdbcTemplate.update(sql,
+                    owner.getFullName(),
+                    owner.getUsername(),
+                    owner.getDescription(),
+                    owner.getEmail(),
+                    owner.getPassword(),
+                    owner.getRole().name(),
+                    owner.getId());
         }
+        return owner;
     }
+
 
     @Override
     public boolean deleteById(String id) {
-        return contactOwners.removeIf(owner -> owner.getId().equals(id));
+        String sql = "DELETE FROM contact_owners WHERE id = ?";
+        return jdbcTemplate.update(sql, id) > 0;
     }
 
     @Override
     public Optional<ContactOwner> findById(String id) {
-        return contactOwners.stream()
-                .filter(owner -> owner.getId().equals(id))
-                .findFirst();
+        String sql = "SELECT id, name, username, description, email, password, role "
+                + "FROM contact_owners WHERE id = ?";
+        List<ContactOwner> owners = jdbcTemplate.query(sql, new ContactOwnerRowMapper(), id);
+        return owners.isEmpty() ? Optional.empty() : Optional.of(owners.getFirst());
     }
 
     @Override
     public Optional<ContactOwner> findByEmail(String email) {
-        return contactOwners.stream()
-                .filter(owner -> owner.getEmail().equalsIgnoreCase(email))
-                .findFirst();
+        String sql = "SELECT id, name, username, description, email, password, role "
+                + "FROM contact_owners WHERE email = ?";
+        List<ContactOwner> owners = jdbcTemplate.query(sql, new ContactOwnerRowMapper(), email);
+        return owners.isEmpty() ? Optional.empty() : Optional.of(owners.getFirst());
     }
 
     @Override
     public Optional<ContactOwner> findByUsername(String username) {
-        return contactOwners.stream()
-                .filter(owner -> owner.getUsername().equalsIgnoreCase(username))
-                .findFirst();
+        String sql = "SELECT id, name, username, description, email, password, role "
+                + "FROM contact_owners WHERE username = ?";
+        List<ContactOwner> owners = jdbcTemplate.query(sql, new ContactOwnerRowMapper(), username);
+        return owners.isEmpty() ? Optional.empty() : Optional.of(owners.getFirst());
     }
 
     @Override
     public Optional<List<ContactOwner>> findByKeyword(String keyword) {
-        String word = keyword.toLowerCase();
-        return Optional.of(contactOwners.stream()
-                .filter(owner -> owner.getUsername().toLowerCase().contains(word)
-                        || owner.getFullName().toLowerCase().contains(word)
-                        || owner.getDescription().toLowerCase().contains(word)
-                        || owner.getEmail().toLowerCase().contains(word))
-                .toList());
+        String pattern = "%" + keyword.toLowerCase() + "%";
+        String sql = "SELECT id, name, username, description, email, password, role "
+                + "FROM contact_owners "
+                + "WHERE LOWER(name) LIKE ? "
+                + "OR LOWER(username) LIKE ? "
+                + "OR LOWER(description) LIKE ? "
+                + "OR LOWER(email) LIKE ?";
+        List<ContactOwner> owners = jdbcTemplate.query(sql, new ContactOwnerRowMapper(),
+                pattern,pattern,pattern,pattern);
+        return Optional.of(owners);
     }
 
 }

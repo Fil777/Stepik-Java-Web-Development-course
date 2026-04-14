@@ -1,7 +1,6 @@
 package stepik.contactsApp.exception.handler;
 
-import org.springframework.http.HttpStatus;
-import stepik.contactsApp.common.util.ServerResponseHelper;
+import stepik.contactsApp.common.utils.serverresponse.ServerResponseHelper;
 import stepik.contactsApp.exception.handler.customException.EntityNotFoundException;
 import stepik.contactsApp.exception.handler.customException.ValidationException;
 import stepik.contactsApp.model.ServerResponse;

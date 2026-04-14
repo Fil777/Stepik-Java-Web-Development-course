@@ -1,4 +1,4 @@
-package stepik.contactsApp.common.util.transliterator;
+package stepik.contactsApp.common.utils.transliterator;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,8 +1,8 @@
-package stepik.contactsApp.service.authentification;
+package stepik.contactsApp.common.utils.authentification;
 
 import stepik.contactsApp.model.enums.AppRole;
 import com.github.javafaker.Faker;
-import stepik.contactsApp.common.util.transliterator.CyrillicToLatin;
+import stepik.contactsApp.common.utils.transliterator.CyrillicToLatin;
 
 import java.util.Locale;
 import java.util.UUID;

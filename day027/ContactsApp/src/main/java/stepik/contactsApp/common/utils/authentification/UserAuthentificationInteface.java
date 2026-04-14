@@ -1,4 +1,4 @@
-package stepik.contactsApp.service.authentification;
+package stepik.contactsApp.common.utils.authentification;
 
 import stepik.contactsApp.model.enums.AppRole;
 

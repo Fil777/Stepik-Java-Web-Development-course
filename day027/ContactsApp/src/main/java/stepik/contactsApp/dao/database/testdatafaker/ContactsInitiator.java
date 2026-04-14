@@ -1,7 +1,7 @@
-package stepik.contactsApp.database.testdatafaker;
+package stepik.contactsApp.dao.database.testdatafaker;
 
 import stepik.contactsApp.model.entity.Contact;
-import stepik.contactsApp.common.util.transliterator.CyrillicToLatin;
+import stepik.contactsApp.common.utils.transliterator.CyrillicToLatin;
 import com.github.javafaker.Faker;
 
 import java.text.SimpleDateFormat;

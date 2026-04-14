@@ -1,11 +1,11 @@
-package stepik.contactsApp.database;
+package stepik.contactsApp.dao.database;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import stepik.contactsApp.database.datagenerator.CreateDatabaseObjects;
-import stepik.contactsApp.database.datagenerator.InsertDatabaseRecords;
-import stepik.contactsApp.database.testdatafaker.ContactOwnersInitiator;
-import stepik.contactsApp.database.testdatafaker.ContactsInitiator;
+import stepik.contactsApp.dao.database.datagenerator.CreateDatabaseObjects;
+import stepik.contactsApp.dao.database.datagenerator.InsertDatabaseRecords;
+import stepik.contactsApp.dao.database.testdatafaker.ContactOwnersInitiator;
+import stepik.contactsApp.dao.database.testdatafaker.ContactsInitiator;
 import stepik.contactsApp.model.entity.Contact;
 import stepik.contactsApp.model.entity.ContactOwner;
 
@@ -27,13 +27,13 @@ public class DatabaseInitializer {
 
     private void insertData() {
 
-        List<Contact> contacts = ContactsInitiator.generate();
-
-        InsertDatabaseRecords.insertContacts(this.jdbcTemplate, contacts);
-
         List<ContactOwner> contactOwners = ContactOwnersInitiator.generate();
 
         InsertDatabaseRecords.insertContactOwners(this.jdbcTemplate, contactOwners);
+
+        List<Contact> contacts = ContactsInitiator.generate();
+
+        InsertDatabaseRecords.insertContacts(this.jdbcTemplate, contacts);
 
     }
 

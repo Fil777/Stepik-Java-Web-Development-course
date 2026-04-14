@@ -1,4 +1,4 @@
-package stepik.contactsApp.database.testdatafaker;
+package stepik.contactsApp.dao.database.testdatafaker;
 
 import stepik.contactsApp.model.entity.ContactOwner;
 import com.github.javafaker.Faker;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import stepik.contactsApp.model.enums.AppRole;
-import stepik.contactsApp.service.authentification.UserAuthentification;
+import stepik.contactsApp.common.utils.authentification.UserAuthentification;
 
 public class ContactOwnersInitiator {
     public static ArrayList<ContactOwner> generate() {
@@ -26,15 +26,11 @@ public class ContactOwnersInitiator {
         Faker faker = new Faker(Locale.of("ru"));
         for (int i = 1; i < counter; i++) {
             ContactOwner owner = new ContactOwner();
-            owner.setId(UserAuthentification.getNewUserId());
-            owner.setId(UserAuthentification.getNewUserId());
             owner.setFullName(faker.name().fullName());
             owner.setUsername(UserAuthentification.getNewUserName(owner.getFullName()));
             owner.setPassword(UserAuthentification.getNewUserPassword());
             owner.setDescription(faker.lorem().sentence());
             owner.setEmail(UserAuthentification.getNewUserEmail(owner.getFullName()));
-            //owner.setRole(UserAuthentification.getNewUserRole(owner.getUsername()));
-            owner.setDescription(faker.lorem().sentence());
             // контакт - в список
             owners.add(owner);
         }
