@@ -23,19 +23,15 @@ public class ContactOwnerController {
 
     private final ContactOwnerServiceInterface contactOwnerService;
 
-    private final ContactService contactService;
-
     @Autowired
-    public ContactOwnerController(ContactOwnerService contactOwnerService,
-                                  ContactService contactService) {
+    public ContactOwnerController(ContactOwnerService contactOwnerService) {
         this.contactOwnerService = contactOwnerService;
-        this.contactService = contactService;
     }
 
     // http://localhost:8080/api/owners/get
     @GetMapping("/get")
     public ResponseEntity<ServerResponse<List<ContactOwner>>> getContactOwners() {
-        var result = new ArrayList<>(contactOwnerService.getContactOwnersAll());
+        List<ContactOwner> result = new ArrayList<>(contactOwnerService.getContactOwnersAll());
         return ServerResponseHelper.ok(result);
     }
 

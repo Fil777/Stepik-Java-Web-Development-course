@@ -21,11 +21,6 @@ public class JpaContactOwnerRepositoryAdapter implements ContactOwnerRepositoryI
     }
 
     @Override
-    public ContactOwner save(ContactOwner owner) {
-        return jpaContactOwnerRepository.save(owner);
-    }
-
-    @Override
     public boolean deleteById(String id) {
         if (jpaContactOwnerRepository.existsById(id)) {
             jpaContactOwnerRepository.deleteById(id);
@@ -34,6 +29,11 @@ public class JpaContactOwnerRepositoryAdapter implements ContactOwnerRepositoryI
         return false;
     }
 
+    @Override
+    public ContactOwner save(ContactOwner owner) {
+        return jpaContactOwnerRepository.save(owner);
+    }
+//
 //    @Override
 //    public Optional<ContactOwner> findById(String id) {
 //        return jpaContactOwnerRepository.findById(id);

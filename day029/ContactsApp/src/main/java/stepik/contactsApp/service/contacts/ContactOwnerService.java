@@ -3,6 +3,7 @@ package stepik.contactsApp.service.contacts;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import stepik.contactsApp.dao.JpaContactOwnerRepositoryAdapter;
 import stepik.contactsApp.exception.handler.customException.EntityNotFoundException;
 import stepik.contactsApp.exception.handler.customException.ValidationException;
@@ -13,6 +14,7 @@ import stepik.contactsApp.model.entity.ContactOwner;
 import java.util.List;
 
 @Service
+@Transactional
 public class ContactOwnerService implements ContactOwnerServiceInterface {
     private final ModelMapper modelMapper;
     private final JpaContactOwnerRepositoryAdapter contactOwnerRepository;
@@ -25,7 +27,9 @@ public class ContactOwnerService implements ContactOwnerServiceInterface {
 
     @Override
     public List<ContactOwner> getContactOwnersAll() {
-        return contactOwnerRepository.findAll();
+        List<ContactOwner> tmp = contactOwnerRepository.findAll();
+        //tmp.forEach(o -> o.setContacts(null));
+        return tmp; //contactOwnerRepository.findAll();
     }
 
     @Override

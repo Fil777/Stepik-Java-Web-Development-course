@@ -1,5 +1,7 @@
 package stepik.contactsApp.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import stepik.contactsApp.common.utils.authentification.UserAuthentification;
 import stepik.contactsApp.model.enums.AppRole;
@@ -15,20 +17,37 @@ import java.util.*;
 @Setter
 public class ContactOwner {
     @Id
+    @JsonProperty(index = 10)
     private String id;
+    @JsonProperty(index = 20)
     private String username;
     @JsonIgnore
     private String password;
+    @JsonProperty(index = 30)
     private String description;
+    @JsonProperty(index = 40)
     private String email;
     @Column(name = "name")
+    @JsonProperty(index = 50)
     private String fullName;
     @Enumerated(EnumType.STRING)
+    @JsonProperty(index = 60)
     private AppRole role;
+
+    @OneToMany(
+            mappedBy = "owner",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
+    )
+    @JsonManagedReference  // ← основная сторона (сериализуется)
+    @JsonProperty(index = 999)
+    private List<Contact> contacts = new ArrayList<>();
 
     public ContactOwner() {
         this.id = UserAuthentification.getNewUserId();
         this.role = UserAuthentification.getNewUserRole();
+        this.contacts = new ArrayList<>();
     }
 
     public ContactOwner(String username, String description) {

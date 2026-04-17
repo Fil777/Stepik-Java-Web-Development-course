@@ -3,6 +3,7 @@ package stepik.contactsApp.dao.database.testdatafaker;
 import stepik.contactsApp.model.entity.Contact;
 import stepik.contactsApp.common.utils.transliterator.CyrillicToLatin;
 import com.github.javafaker.Faker;
+import stepik.contactsApp.model.entity.ContactOwner;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.Random;
 
 public class ContactsInitiator {
 
-    public static ArrayList<Contact> generate() {
+    public static ArrayList<Contact> generate(ContactOwner owner) {
         //int contactsCounter = 1;
         int contactsCounter = (new Random()).nextInt(10) + 1;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -25,8 +26,9 @@ public class ContactsInitiator {
                 "Ж",
                 "2000-11-18",
                 "+7(999)888-77-66",
-                "valentina.eshkina@mail.ru"
-                        ,null
+                "valentina.eshkina@mail.ru",
+                owner,
+                        null
         ));
 
         // эмулируем контакты из faker
@@ -39,8 +41,9 @@ public class ContactsInitiator {
                     faker.demographic().sex(),
                     sdf.format(faker.date().birthday(18, 68)),
                     faker.phoneNumber().phoneNumber(),
-                    faker.internet().emailAddress()
-                    ,null
+                    faker.internet().emailAddress(),
+                    owner,
+                    null
             );
             // русификация ФИО
             updateNamesAsRussian(contact);

@@ -1,11 +1,9 @@
 package stepik.contactsApp.service.contacts;
 
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import stepik.contactsApp.dao.JpaContactDetailsRepositoryAdapter;
 import stepik.contactsApp.dao.JpaContactRepositoryAdapter;
 import stepik.contactsApp.exception.handler.customException.EntityNotFoundException;
 import stepik.contactsApp.exception.handler.customException.ValidationException;
@@ -15,7 +13,6 @@ import stepik.contactsApp.model.dto.UpdateContactDTO;
 import stepik.contactsApp.model.entity.Contact;
 import stepik.contactsApp.model.entity.ContactDetail;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,14 +20,11 @@ import java.util.List;
 public class ContactService implements ContactServiceInterface {
     private final ModelMapper modelMapper;
     private final JpaContactRepositoryAdapter contactRepository;
-    private final JpaContactDetailsRepositoryAdapter contactDetailsRepository;
 
     @Autowired
     public ContactService(JpaContactRepositoryAdapter contactRepository,
-                          JpaContactDetailsRepositoryAdapter contactDetailsRepository,
-                          ModelMapper modelMapper) {
+                             ModelMapper modelMapper) {
         this.contactRepository = contactRepository;
-        this.contactDetailsRepository = contactDetailsRepository;
         this.modelMapper = modelMapper;
     }
 

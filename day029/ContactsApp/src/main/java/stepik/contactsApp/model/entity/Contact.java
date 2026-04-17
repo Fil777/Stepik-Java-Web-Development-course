@@ -1,5 +1,8 @@
 package stepik.contactsApp.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,21 +24,36 @@ public class Contact {
 //    @SequenceGenerator(name = "contacts_seq", sequenceName = "contacts_seq", initialValue = 1, allocationSize = 1)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(index = 10)
     private Integer id;
     @Column(name = "first_name")
+    @JsonProperty(index = 20)
     private String firstName;
+    @JsonProperty(index = 30)
     @Column(name = "last_name")
     private String lastName;
+    @JsonProperty(index = 40)
     private String sex;
+    @JsonProperty(index = 50)
     @Column(name = "birth_date")
     private String birthDate;
+    @JsonProperty(index = 60)
     private String telephone;
+    @JsonProperty(index = 70)
     private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    @JsonBackReference  // ← обратная сторона (не сериализуется)
+    @JsonProperty(index = 999)
+    private ContactOwner owner;
+
     @OneToOne(
             mappedBy = "contact",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonProperty(index = 1000)
     private ContactDetail contactDetail;
 
 

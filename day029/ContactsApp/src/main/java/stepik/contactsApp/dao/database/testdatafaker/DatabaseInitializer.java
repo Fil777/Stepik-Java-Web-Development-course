@@ -3,6 +3,7 @@ package stepik.contactsApp.dao.database.testdatafaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import stepik.contactsApp.dao.JpaContactDetailsRepositoryAdapter;
 import stepik.contactsApp.dao.JpaContactOwnerRepositoryAdapter;
 import stepik.contactsApp.dao.JpaContactRepositoryAdapter;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Slf4j
 @Component
+@Transactional
 public class DatabaseInitializer {
     private final JpaContactOwnerRepositoryAdapter contactOwnerRepository;
     private final JpaContactRepositoryAdapter contactRepository;
@@ -30,31 +32,37 @@ public class DatabaseInitializer {
     }
 
     public void init() {
+
         if (contactOwnerRepository.count() == 0) {
-            log.debug(">>>   Filling table ContactOwners with test data.");
+            log.info(">>>   Filling table ContactOwners with test data.");
             List<ContactOwner> contactOwners = ContactOwnersInitiator.generate();
             contactOwnerRepository.saveAll(contactOwners);
-            log.debug(">>>   Table ContactOwners is filled with test data.");
+            log.info(">>>   Table ContactOwners is filled with test data.");
         } else {
-            log.debug(">>>   Table ContactOwners already contains test data.");
+            log.info(">>>   Table ContactOwners already contains test data.");
         }
-        if (contactRepository.count() == 0) {
-            log.debug(">>>   Filling table Contacts with test data.");
-            List<Contact> contacts = ContactsInitiator.generate();
-            contactRepository.saveAll(contacts);
-            log.debug(">>>   Table Contacts is filled with test data.");
 
-            contacts = contactRepository.findAll();
-            log.debug(">>>   Filling table Contact Details with test data.");
-            for (Contact contact : contacts){
+        if (contactRepository.count() == 0) {
+            log.info(">>>   Filling table Contacts with test data.");
+            List<ContactOwner> owners = contactOwnerRepository.findAll();
+            for (ContactOwner owner : owners) {
+                List<Contact> contacts = ContactsInitiator.generate(owner);
+                contactRepository.saveAll(contacts);
+            }
+            log.info(">>>   Table Contacts is filled with test data.");
+        } else {
+            log.info(">>>   Table Contacts already contains test data.");
+        }
+
+        if (contactDetailsRepository.count() == 0) {
+            log.info(">>>   Filling table Contact Details with test data.");
+            List<Contact> contacts = contactRepository.findAll();
+            for (Contact contact : contacts) {
                 List<ContactDetail> details = ContactDetailsInitiator.generate(contact);
                 contactDetailsRepository.saveAll(details);
             }
-            log.debug(">>>   Table Contact Details is filled with test data.");
-
-
         } else {
-            log.debug(">>>   Table Contacts already contains test data.");
+            log.info(">>>   Table Contact Details is filled with test data.");
         }
     }
 }
