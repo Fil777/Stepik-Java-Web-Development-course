@@ -113,7 +113,7 @@ public class ContactService implements ContactServiceInterface {
         // creating new detail
         ContactDetailDTO detailDTO = dto.getContactDetail();
         ContactDetail newDetail = modelMapper.map(detailDTO, ContactDetail.class);
-        // Id of new datail should be the same as the one on the contact
+        // Id of new detail should be the same as the one on the contact
         newDetail.setId(contactInRepository.getContactDetail().getId());
         // updating existing detail with new data
         contactInRepository.getContactDetail().updateWith(newDetail);

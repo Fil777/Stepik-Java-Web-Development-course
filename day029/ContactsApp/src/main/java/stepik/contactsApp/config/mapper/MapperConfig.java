@@ -1,4 +1,4 @@
-package stepik.contactsApp.mapper;
+package stepik.contactsApp.config.mapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
