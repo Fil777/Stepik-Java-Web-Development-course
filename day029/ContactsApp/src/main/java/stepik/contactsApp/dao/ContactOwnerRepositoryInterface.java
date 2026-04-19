@@ -1,5 +1,6 @@
 package stepik.contactsApp.dao;
 
+import stepik.contactsApp.model.dto.ContactOwnerDTO;
 import stepik.contactsApp.model.entity.ContactOwner;
 
 import java.util.List;

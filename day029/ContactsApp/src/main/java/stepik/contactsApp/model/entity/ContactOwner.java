@@ -96,26 +96,4 @@ public class ContactOwner {
         return Objects.hash(id, username.toLowerCase(), email.toLowerCase());
     }
 
-    public void updateWith(ContactOwner corrections) {
-        if (!this.id.equals(corrections.id)) return;
-
-        if (corrections.username != null && !corrections.username.isEmpty()) {
-            this.username = corrections.username;
-        }
-        if (corrections.password != null && !corrections.password.isEmpty()) {
-            this.password = corrections.password;
-        }
-        if (corrections.description != null && !corrections.description.isEmpty()) {
-            this.description = corrections.description;
-        }
-        if (corrections.fullName != null && !corrections.fullName.isEmpty()) {
-            this.fullName = corrections.fullName;
-        }
-        if (corrections.email != null && !corrections.email.isEmpty()) {
-            this.email = corrections.email;
-        }
-        if (corrections.role != null && !corrections.role.toString().isEmpty()) {
-            this.role = corrections.role;
-        }
-    }
 }

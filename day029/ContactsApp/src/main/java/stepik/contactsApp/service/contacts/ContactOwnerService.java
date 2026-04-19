@@ -7,11 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 import stepik.contactsApp.dao.JpaContactOwnerRepositoryAdapter;
 import stepik.contactsApp.exception.handler.customException.EntityNotFoundException;
 import stepik.contactsApp.exception.handler.customException.ValidationException;
+import stepik.contactsApp.model.dto.ContactOwnerDTO;
 import stepik.contactsApp.model.dto.CreateContactOwnerDTO;
 import stepik.contactsApp.model.dto.UpdateContactOwnerDTO;
 import stepik.contactsApp.model.entity.ContactOwner;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -26,10 +29,11 @@ public class ContactOwnerService implements ContactOwnerServiceInterface {
     }
 
     @Override
-    public List<ContactOwner> getContactOwnersAll() {
-        List<ContactOwner> tmp = contactOwnerRepository.findAll();
-        //tmp.forEach(o -> o.setContacts(null));
-        return tmp; //contactOwnerRepository.findAll();
+    public List<ContactOwnerDTO> getContactOwnersAll() {
+        return contactOwnerRepository.findAll().stream()
+                .map(owner -> modelMapper.map(owner, ContactOwnerDTO.class))
+                .collect(Collectors.toList());
+//        return contactOwnerRepository.findAll();
     }
 
     @Override
@@ -66,8 +70,7 @@ public class ContactOwnerService implements ContactOwnerServiceInterface {
                     }
                 });
 
-        ContactOwner owner = modelMapper.map(dto, ContactOwner.class);
-        ownerInRepository.updateWith(owner);
+        modelMapper.map(dto, ownerInRepository); // мапируются только где not null
         return contactOwnerRepository.save(ownerInRepository);
     }
 

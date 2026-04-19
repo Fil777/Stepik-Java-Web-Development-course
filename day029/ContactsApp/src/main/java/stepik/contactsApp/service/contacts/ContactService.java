@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import stepik.contactsApp.dao.JpaContactOwnerRepositoryAdapter;
 import stepik.contactsApp.dao.JpaContactRepositoryAdapter;
 import stepik.contactsApp.exception.handler.customException.EntityNotFoundException;
 import stepik.contactsApp.exception.handler.customException.ValidationException;
@@ -20,12 +21,17 @@ import java.util.List;
 public class ContactService implements ContactServiceInterface {
     private final ModelMapper modelMapper;
     private final JpaContactRepositoryAdapter contactRepository;
+    private final JpaContactOwnerRepositoryAdapter contactOwnerRepository;
 
     @Autowired
-    public ContactService(JpaContactRepositoryAdapter contactRepository,
-                             ModelMapper modelMapper) {
+    public ContactService(
+            JpaContactRepositoryAdapter contactRepository,
+            JpaContactOwnerRepositoryAdapter contactOwnerRepository,
+            ModelMapper modelMapper
+    ) {
         this.contactRepository = contactRepository;
         this.modelMapper = modelMapper;
+        this.contactOwnerRepository = contactOwnerRepository;
     }
 
     @Override
@@ -42,6 +48,20 @@ public class ContactService implements ContactServiceInterface {
 
     @Override
     public Contact createContact(CreateContactDTO dto) {
+        // checking owner's Id
+        if (dto.getOwnerId() == null || dto.getOwnerId().isEmpty()) {
+            throw new ValidationException("Id владельца не может быть пустым");
+        }
+        contactOwnerRepository.findById(dto.getOwnerId())
+                .ifPresentOrElse(
+                        owner -> {
+                            // Действие, если объект найден (например, логирование или обработка)
+                        },
+                        () -> {
+                            // Действие, если объект НЕ найден (например, выброс исключения или логирование ошибки)
+                            throw new EntityNotFoundException("Id владельца не найден");
+                        }
+                );
         // checking uniqueness of email & phone number
         contactRepository.findByEmail(dto.getEmail())
                 .ifPresent(contact -> {
@@ -56,7 +76,7 @@ public class ContactService implements ContactServiceInterface {
         Contact newContact = modelMapper.map(dto, Contact.class);
 
         // creating contact detail and establishing links one-to-one
-        if (dto.getContactDetail() != null){
+        if (dto.getContactDetail() != null) {
             ContactDetail contactDetail = modelMapper.map(dto.getContactDetail(), ContactDetail.class);
             contactDetail.setContact(newContact);
             newContact.setContactDetail(contactDetail);
@@ -87,11 +107,9 @@ public class ContactService implements ContactServiceInterface {
                     }
                 });
 
-        // creating new contact
-        Contact newContact = modelMapper.map(dto, Contact.class);
+        // updating existing contact with new data (only not null)
+        modelMapper.map(dto, contactInRepository);
 
-        // updating existing contact with new one
-        contactInRepository.updateWith(newContact);
         // creating new detail
         ContactDetailDTO detailDTO = dto.getContactDetail();
         ContactDetail newDetail = modelMapper.map(detailDTO, ContactDetail.class);
@@ -106,7 +124,7 @@ public class ContactService implements ContactServiceInterface {
 
     @Override
     public boolean deleteContact(int id) {
-        if (contactRepository.findById(id).isEmpty()){
+        if (contactRepository.findById(id).isEmpty()) {
             throw new EntityNotFoundException("Контакт " + id + " не найден");
         }
         return contactRepository.deleteById(id);

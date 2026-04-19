@@ -2,6 +2,7 @@ package stepik.contactsApp.controller;
 
 import stepik.contactsApp.common.utils.serverresponse.ServerResponseHelper;
 import stepik.contactsApp.model.ServerResponse;
+import stepik.contactsApp.model.dto.ContactOwnerDTO;
 import stepik.contactsApp.model.dto.CreateContactOwnerDTO;
 import stepik.contactsApp.model.dto.UpdateContactOwnerDTO;
 import stepik.contactsApp.model.entity.ContactOwner;
@@ -12,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import stepik.contactsApp.service.contacts.ContactOwnerService;
 import stepik.contactsApp.service.contacts.ContactOwnerServiceInterface;
-import stepik.contactsApp.service.contacts.ContactService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +30,8 @@ public class ContactOwnerController {
 
     // http://localhost:8080/api/owners/get
     @GetMapping("/get")
-    public ResponseEntity<ServerResponse<List<ContactOwner>>> getContactOwners() {
-        List<ContactOwner> result = new ArrayList<>(contactOwnerService.getContactOwnersAll());
+    public ResponseEntity<ServerResponse<List<ContactOwnerDTO>>> getContactOwners() {
+        List<ContactOwnerDTO> result = new ArrayList<>(contactOwnerService.getContactOwnersAll());
         return ServerResponseHelper.ok(result);
     }
 

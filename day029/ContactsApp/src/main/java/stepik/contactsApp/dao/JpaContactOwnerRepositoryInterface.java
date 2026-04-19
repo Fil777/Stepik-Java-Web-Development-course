@@ -2,6 +2,7 @@ package stepik.contactsApp.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import stepik.contactsApp.model.dto.ContactOwnerDTO;
 import stepik.contactsApp.model.entity.ContactOwner;
 
 import java.util.List;
@@ -18,4 +19,5 @@ public interface JpaContactOwnerRepositoryInterface extends JpaRepository<Contac
             + "OR LOWER(co.description) LIKE LOWER(CONCAT('%', :keyword, '%')) "
             + "OR LOWER(co.email) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     Optional<List<ContactOwner>> findByKeyword(String keyword);
+
 }
