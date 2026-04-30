@@ -8,16 +8,24 @@ import java.util.Base64;
 public class Main {
     public static void main(String[] args) {
 
-//        jwt secret key generation
+//  for Spring Boot projects:
+        Package pkg = Main.class.getPackage();
+        String springBootVersion = pkg.getImplementationVersion();
+        System.out.println("Версия Spring Boot: " + springBootVersion);
+
+//  JWT secret key generation for Spring Boot version 4.*
         SecureRandom secureRandom = new SecureRandom();
         byte[] keyBytes = new byte[256 / 8];
         secureRandom.nextBytes(keyBytes);
-//        String secret = Base64.getEncoder().encodeToString(keyBytes);
-        String secret = Base64
+        String secret3 = Base64
+                .getEncoder()
+                .encodeToString(keyBytes);
+        String secret4 = Base64
                 .getUrlEncoder()
                 .withoutPadding()
                 .encodeToString(keyBytes);
-        System.out.println("\nSecret Key:\n" + secret);
+        System.out.printf("\nSecret Key for Spring Boot version 3.*:\n%s\n", secret3);
+        System.out.printf("\nSecret Key for Spring Boot version 4.*:\n%s\n", secret4);
 
     }
 }

@@ -39,7 +39,7 @@ public class JwtSecurityService {
                         .map(GrantedAuthority::getAuthority)
                         .orElse("USER"))
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60) // это 60 минут!
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // это 60 минут!
                 .signWith(getSigningKey())
                 .compact();
     }
