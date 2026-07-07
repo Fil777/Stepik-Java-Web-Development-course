@@ -1,7 +1,7 @@
 package com.example.controller;
 
 import com.example.common.util.ServerResponseHelper;
-import com.example.initiatedata.ContactsInitiator;
+import com.example.datainitiator.ContactsInitiator;
 
 import com.example.model.ServerResponse;
 import com.example.model.dto.CreateContactDTO;
@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.*;
 import com.example.model.entity.Contact;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/contacts")
 public class ContactController {
     @Autowired
     private ModelMapper modelMapper;
-    private ArrayList<Contact> contacts;// = new ArrayList<>();
+    private final List<Contact> contacts;// = new ArrayList<>();
 
     public ContactController() {
         this.contacts = ContactsInitiator.generate();
@@ -35,17 +36,15 @@ public class ContactController {
 
     // http://localhost:8080/api/contacts/get
     @GetMapping("/get")
-    public ResponseEntity<ServerResponse<ArrayList<Contact>>> getContacts() {
+    public ResponseEntity<ServerResponse<List<Contact>>> getContacts() {
         return ServerResponseHelper.ok(this.contacts);
     }
 
     // http://localhost:8080/api/contacts/get/2
     @GetMapping("/get/{id}")
-    public ResponseEntity<ServerResponse<Contact>> getContactById(@PathVariable("id") int id) {
-        Contact contact = contacts.stream()
-                .filter(c -> c.getId() == id)
-                .findFirst()
-                .orElse(null);
+    public ResponseEntity<ServerResponse<Contact>> getContactById(
+            @PathVariable("id") int id) {
+        Contact contact = contactWithThisId(id);
         if (contact == null) {
             return ServerResponseHelper.notFound(null);
         } else {
@@ -54,7 +53,8 @@ public class ContactController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ServerResponse<Void>> deleteContact(@PathVariable("id") int id) {
+    public ResponseEntity<ServerResponse<Void>> deleteContact(
+            @PathVariable("id") int id) {
         boolean removed = contacts.removeIf(c -> c.getId() == id);
         if (removed) {
             return ServerResponseHelper.ok(null);
@@ -89,14 +89,14 @@ public class ContactController {
         return ServerResponseHelper.ok(contact, HttpStatus.CREATED);
     }
 
-    @PatchMapping("/update") //@PutMapping("/update")
+    @PatchMapping("/update/{id}") //@PutMapping("/update")
     public ResponseEntity<ServerResponse<Contact>> updateContact(
+            @PathVariable("id") int id,
             @RequestBody @Valid UpdateContactDTO contactDTO) {
 
-        Contact contactInList = contactWithThisId(contactDTO.getId());
+        Contact contactInList = contactWithThisId(id);
         if (contactInList == null) {
-            return ServerResponseHelper.notFound(null, "Отсутствует контакт с id = "
-                    + contactDTO.getId());
+            return ServerResponseHelper.notFound(null, "Отсутствует контакт с id = " + id);
         }
 
         Contact check1 = contactWithThisEmail(contactDTO.getEmail());
@@ -111,12 +111,15 @@ public class ContactController {
                     + contactDTO.getTelephone() + " уже существует");
         }
 
+        contactDTO.setId(id);
         Contact updatedContact = modelMapper.map(contactDTO, Contact.class);
         contactInList.updateWith(updatedContact);
 
         return ServerResponseHelper.ok(contactInList);
 
     }
+
+    //--------------------------------------------------------------------------------------
 
     private Contact contactWithThisId(int id) {
         return contacts.stream()

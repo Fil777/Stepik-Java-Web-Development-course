@@ -6,18 +6,37 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Contact {
-    private int id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private String sex;
     private String birthDate;
     private String telephone;
     private String email;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || !(obj instanceof Contact)) return false;
+        Contact that = (Contact) obj;
+        if (Objects.equals(this.id, that.id)
+                && (that.firstName.equalsIgnoreCase(this.firstName))
+                && (that.lastName.equalsIgnoreCase(this.lastName))
+                && (that.email.equalsIgnoreCase(this.email))) return true;
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName.toLowerCase(), lastName.toLowerCase(), email.toLowerCase());
+    }
 
     public void updateWith(Contact corrections){
         if (this.id != corrections.id) return;
